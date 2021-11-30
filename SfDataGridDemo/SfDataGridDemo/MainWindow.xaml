@@ -1,0 +1,73 @@
+﻿<Window
+    x:Class="SfDataGridDemo.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SfDataGridDemo"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:syncfusion="using:Syncfusion.UI.Xaml.DataGrid"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    
+    <Grid>
+        <Grid.DataContext>
+            <local:ProductSalesDetailsCollection />
+        </Grid.DataContext>
+        <Grid.Resources>
+            <Style x:Key="ApplyCellStyle" TargetType="syncfusion:GridCell">                   
+                <Setter Property="Foreground" Value="Blue" />
+                <Setter Property="Background" Value="Yellow"/>
+            </Style>
+        </Grid.Resources>
+        <syncfusion:SfDataGrid x:Name="dataGrid"    
+                               AutoGenerateColumns="False"
+                               AllowFiltering="True"
+                               ColumnWidthMode="Star"
+                               AllowEditing="True"
+                               ItemsSource="{Binding ProductInfo}">
+            <syncfusion:SfDataGrid.Columns>
+                <syncfusion:GridTextColumn    HeaderText="Product"             
+                                              MappingName="Product" />
+                <syncfusion:GridTextColumn    HeaderText="Country"             
+                                              MappingName="Country" />
+                <syncfusion:GridTextColumn    HeaderText="State"               
+                                              MappingName="State"   />
+                <syncfusion:GridTextColumn    HeaderText="Unit Price"          
+                                              MappingName="Amount" 
+                                              TextAlignment="Right"/>
+                <syncfusion:GridTextColumn    HeaderText="Quantity"            
+                                              MappingName="Quantity"
+                                              TextAlignment="Right"/>
+                <syncfusion:GridTextColumn    HeaderText="Discount"            
+                                              MappingName="Discount"
+                                              TextAlignment="Right"/>               
+
+                <!--  UnBoundColumn with Expressions  -->
+                <syncfusion:GridUnboundColumn Width="150"                      
+                                              AllowEditing="False"
+                                              Expression="Quantity*Amount"  
+                                              HeaderText="Grand Total"         
+                                              MappingName="GrandTotal"
+                                              TextAlignment="Right" >
+                    <syncfusion:GridUnboundColumn.CellStyle>
+                        <Style TargetType="syncfusion:GridCell">
+                            <Setter  Property="Foreground"  Value="Red" />
+                        </Style>
+                    </syncfusion:GridUnboundColumn.CellStyle>
+                </syncfusion:GridUnboundColumn>
+
+                <syncfusion:GridUnboundColumn Width="150"
+                                              AllowEditing="False"
+                                              Expression="Amount*Discount/100"
+                                              HeaderText="Discount Amount"
+                                              CellStyle="{StaticResource ApplyCellStyle}"
+                                              MappingName="DiscountAmount"
+                                              TextAlignment="Right" />
+
+                <syncfusion:GridUnboundColumn Width="150"
+                                              Expression="((Quantity*Amount) - (Amount*Discount/100))"
+                                              HeaderText="Total Price"
+                                              MappingName="TotalPrice" />
+            </syncfusion:SfDataGrid.Columns>
+        </syncfusion:SfDataGrid>
+    </Grid>
+</Window>
